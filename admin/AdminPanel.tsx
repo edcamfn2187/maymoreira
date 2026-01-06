@@ -4,6 +4,8 @@ import { VIDEOS } from "../constants";
 import { loadFromStorage, saveToStorage } from "../utils/storage";
 import { VIDEO_CATEGORIES } from "../constants";
 import AdminAnamneses from "./AdminAnamneses";
+import { supabase } from "../lib/supabase";
+
 
 
 
@@ -20,7 +22,9 @@ const AdminPanel = () => {
 
 
 
-
+  // ----------------
+  // Convert Youtube
+  // ----------------
   const toYoutubeEmbedUrl = (url: string) => {
     if (!url) return "";
 
@@ -62,8 +66,8 @@ const AdminPanel = () => {
     
   });
   useEffect(() => {
-    saveToStorage("admin_videos", videos);
-  }, [videos]);
+    loadVideos();
+  }, []);
 
   // ----------------
   // ---- ALUNOS ----
@@ -107,37 +111,35 @@ const AdminPanel = () => {
     setVideoForm({ ...videoForm, [e.target.name]: e.target.value });
   };
 
-  const saveVideo = () => {
-    if (!videoForm.title || !videoForm.videoUrl) return;
-    if (!videoForm.category) {alert("Selecione uma categoria"); return;}
+  const loadVideos = async () => {
+    const { data, error } = await supabase.from("videos").select("*").order("created_at", { ascending: false });
 
-
-    if (editingVideoId) {
-      setVideos(
-        videos.map((v) =>
-          v.id === editingVideoId
-            ? {
-                ...v,
-                ...videoForm,
-                videoUrl: toYoutubeEmbedUrl(videoForm.videoUrl),
-              }
-            : v
-        )
-      );
-      setEditingVideoId(null);
-    } else {
-      setVideos([
-        ...videos,
-        {
-          ...videoForm,
-          id: crypto.randomUUID(),
-          videoUrl: toYoutubeEmbedUrl(videoForm.videoUrl),
-          allowedPlans: videoForm.allowedPlans ?? [],
-        },
-      ]);
-
-
+    if (!error && data) {
+      setVideos(data);
     }
+  };
+
+  const saveVideo = async () => {
+    if (!videoForm.title || !videoForm.videoUrl) return;
+
+    const { error } = await supabase.from("videos").insert([
+      {
+        title: videoForm.title,
+        category: videoForm.category,
+        description: videoForm.description,
+        duration: videoForm.duration,
+        thumbnail: videoForm.thumbnail,
+        video_url: videoForm.videoUrl,
+      },
+    ]);
+
+    if (error) {
+      alert("Erro ao salvar vídeo");
+      console.error(error);
+      return;
+    }
+
+    alert("Vídeo salvo com sucesso!");
 
     setVideoForm({
       title: "",
@@ -147,7 +149,10 @@ const AdminPanel = () => {
       thumbnail: "",
       videoUrl: "",
     });
+
+    loadVideos();
   };
+
 
 
   /* =======================

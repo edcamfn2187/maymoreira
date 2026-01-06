@@ -1,27 +1,36 @@
 import { useEffect, useState } from "react";
 import { ExerciseVideo } from "../types";
-import { VIDEOS, VIDEO_CATEGORIES } from "../constants";
+import { VIDEO_CATEGORIES } from "../constants";
+import { supabase } from "../lib/supabase";
 
 const VideoGrid = () => {
   const [videos, setVideos] = useState<ExerciseVideo[]>([]);
   const [selectedVideo, setSelectedVideo] = useState<ExerciseVideo | null>(null);
   const [filter, setFilter] = useState("Todos");
 
-  useEffect(() => {
-    const stored = localStorage.getItem("admin_videos");
+  // =======================
+  // BUSCAR VÍDEOS DO SUPABASE
+  // =======================
+  const loadVideos = async () => {
+    const { data, error } = await supabase
+      .from("videos")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        setVideos(parsed);
-      } catch {
-        setVideos(VIDEOS);
-      }
+    if (error) {
+      console.error("Erro ao buscar vídeos:", error);
     } else {
-      setVideos(VIDEOS);
+      setVideos(data || []);
     }
+  };
+
+  useEffect(() => {
+    loadVideos();
   }, []);
 
+  // =======================
+  // FILTRO
+  // =======================
   const filteredVideos =
     filter === "Todos"
       ? videos
@@ -111,7 +120,7 @@ const VideoGrid = () => {
 
               <iframe
                 className="w-full h-full"
-                src={selectedVideo.videoUrl}
+                src={selectedVideo.video_url}
                 title={selectedVideo.title}
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

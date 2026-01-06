@@ -1,13 +1,14 @@
-export type ExerciseVideo = {
+export interface ExerciseVideo {
   id: string;
   title: string;
   category: string;
-  description: string;
-  duration: string;
-  thumbnail: string;
-  videoUrl: string;
-  allowedPlans?: string[];
-};
+  description?: string;
+  duration?: string;
+  thumbnail?: string;
+  video_url: string; 
+  created_at?: string;
+}
+
 
 
 export type Student = {
