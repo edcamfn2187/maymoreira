@@ -1,0 +1,9 @@
+
+{
+  "name": "Elite Personal Training",
+  "description": "Uma plataforma premium para personal trainers divulgarem seu trabalho e fornecerem vídeos instrutivos aos seus alunos com auxílio de IA.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
