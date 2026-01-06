@@ -194,7 +194,7 @@ const App: React.FC = () => {
         <section className="py-24 px-6 bg-slate-950">
           <AnamneseForm />
         </section>
-        
+
         <section className="bg-slate-900/50 py-20 border-y border-white/5">
           <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center">
             <div className="group">
@@ -227,9 +227,15 @@ const App: React.FC = () => {
             <p className="text-xl mb-12 font-medium opacity-95 max-w-xl mx-auto leading-relaxed">
               Junte-se à minha consultoria e tenha um plano desenhado especificamente para as suas necessidades e rotina.
             </p>
-            <button className="bg-slate-900 text-white font-bold px-12 py-5 rounded-full text-xl hover:bg-black transition-all hover:scale-105 active:scale-95 shadow-2xl flex items-center justify-center gap-3 mx-auto uppercase tracking-[0.2em]">
-              Falar com Mayara Moreira
-            </button>
+            <a 
+              href="https://wa.me/33988922017?text=Olá%20Mayara,%20gostaria%20de%20saber%20mais%20sobre%20seus%20serviços" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              <button className="bg-slate-900 text-white font-bold px-12 py-5 rounded-full text-xl hover:bg-black transition-all hover:scale-105 active:scale-95 shadow-2xl flex items-center justify-center gap-3 mx-auto uppercase tracking-[0.2em]">
+                Falar com Mayara Moreira
+              </button>
+            </a>
           </div>
         </section>
       </main>
