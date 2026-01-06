@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { PERSONAL_INFO } from "./constants";
 import VideoGrid from "./components/VideoGrid";
-import AdminPanel from "./admin/AdminPanel";
+import AdminGate  from "./admin/AdminGate";
+import StudentGate  from "./student/StudentGate";
 import AnamneseForm from "./components/AnamneseForm";
+import { Link } from "react-router-dom";
 
 
 
@@ -12,6 +14,7 @@ const App: React.FC = () => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   const [adminOpen, setAdminOpen] = useState(false);
+  const [alunoOpen, setalunoOpen] = useState(false);
 
 
   useEffect(() => {
@@ -36,7 +39,22 @@ const App: React.FC = () => {
           Voltar para o site
         </button>
 
-        <AdminPanel />
+        <AdminGate />
+      </div>
+    );
+  }
+
+    if (alunoOpen) {
+    return (
+      <div className="min-h-screen bg-slate-950">
+        <button
+          onClick={() => setalunoOpen(false)}
+          className="m-6 bg-pink-600 text-white px-6 py-2 rounded-full font-bold"
+        >
+          Voltar para o site
+        </button>
+
+        <StudentGate />
       </div>
     );
   }
@@ -66,20 +84,26 @@ const App: React.FC = () => {
             </span>
           </div>
 
-          {/* Desktop menu */}
+         {/* Desktop menu */}
           <div className="hidden md:flex items-center gap-8">
-            <a href="#home" className="text-sm font-bold uppercase tracking-widest text-slate-300 hover:text-pink-500">
+            <a href="#home" className="menu-link">
               Início
             </a>
-            <a href="#videos" className="text-sm font-bold uppercase tracking-widest text-slate-300 hover:text-pink-500">
+
+            <a href="#videos" className="menu-link">
               Treinos
             </a>
-            <button className="bg-pink-600 text-white px-6 py-2 rounded-full font-bold text-sm uppercase hover:bg-pink-500 transition">
+
+            <button
+              onClick={() => setalunoOpen(true)}
+              className="menu-button">
               Área do Aluno
             </button>
+
             <button
               onClick={() => setAdminOpen(true)}
-              className="bg-pink-600 text-white px-6 py-2 rounded-full font-bold">
+              className="menu-button"
+            >
               Área Administrativa
             </button>
           </div>
@@ -108,31 +132,30 @@ const App: React.FC = () => {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+
       {menuOpen && (
-        <div className="fixed inset-0 z-[90] bg-slate-950/95 backdrop-blur-md flex flex-col items-center justify-center gap-8">
-          <a
-            href="#home"
-            onClick={() => setMenuOpen(false)}
-            className="text-2xl font-bold uppercase text-white hover:text-pink-500"
-          >
+        <div className="md:hidden mt-6 bg-slate-900 rounded-2xl p-6 flex flex-col gap-4">
+          <a href="#home" className="menu-link">
             Início
           </a>
-          <a
-            href="#videos"
-            onClick={() => setMenuOpen(false)}
-            className="text-2xl font-bold uppercase text-white hover:text-pink-500"
-          >
+
+          <a href="#videos" className="menu-link">
             Treinos
           </a>
-          <button
-            onClick={() => setMenuOpen(false)}
-            className="bg-pink-600 text-white px-8 py-3 rounded-full font-bold uppercase hover:bg-pink-500 transition"
-          >
+
+          <button className="menu-button w-full">
             Área do Aluno
+          </button>
+
+          <button
+            onClick={() => setAdminOpen(true)}
+            className="menu-button w-full"
+          >
+            Área Administrativa
           </button>
         </div>
       )}
+
 
       {/* Hero Section with requested Photo and Swipe Up */}
       <header id="home" className="relative h-screen w-full flex items-center justify-center overflow-hidden">

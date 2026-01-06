@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { supabase } from "../lib/supabase";
 
 const AnamneseForm = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
+    email: "",
     age: "",
     height: "",
     weight: "",
@@ -16,28 +19,43 @@ const AnamneseForm = () => {
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    if (!form.name || !form.objective) {
-      alert("Preencha pelo menos nome e objetivo");
+  const handleSubmit = async () => {
+    if (!form.name || !form.email || !form.objective) {
+      alert("Preencha pelo menos nome, email e objetivo");
       return;
     }
 
-    const saved = JSON.parse(
-      localStorage.getItem("anamneses") || "[]"
-    );
+    setLoading(true);
 
-    localStorage.setItem(
-      "anamneses",
-      JSON.stringify([
-        ...saved,
-        { id: crypto.randomUUID(), ...form, createdAt: new Date() },
-      ])
-    );
+    const payload = {
+      name: form.name,
+      email: form.email,
+      age: form.age || null,
+      height: form.height || null,
+      weight: form.weight || null,
+      objective: form.objective || null,
+      experience: form.experience || null,
+      injuries: form.injuries || null,
+      limitations: form.limitations || null,
+      availability: form.availability || null,
+    };
+
+    const { error } = await supabase.from("anamneses").insert([payload]);
+
+    setLoading(false);
+
+    if (error) {
+      console.error("ERRO AO SALVAR ANAMNESE 👉", error);
+      alert("Erro ao enviar anamnese. Tente novamente.");
+      return;
+    }
 
     setSubmitted(true);
   };
@@ -67,6 +85,15 @@ const AnamneseForm = () => {
           value={form.name}
           onChange={handleChange}
           placeholder="Nome completo"
+          className="p-3 bg-slate-800 rounded"
+        />
+
+        <input
+          name="email"
+          type="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="E-mail"
           className="p-3 bg-slate-800 rounded"
         />
 
@@ -141,10 +168,11 @@ const AnamneseForm = () => {
         />
 
         <button
+          disabled={loading}
           onClick={handleSubmit}
-          className="bg-pink-600 py-3 rounded font-bold hover:bg-pink-500 transition"
+          className="bg-pink-600 py-3 rounded font-bold hover:bg-pink-500 transition disabled:opacity-50"
         >
-          Enviar Anamnese
+          {loading ? "Enviando..." : "Enviar Anamnese"}
         </button>
       </div>
     </div>

@@ -25,3 +25,19 @@ export type Plan = {
   price: string;
   description: string;
 };
+
+
+export type Anamnese = {
+  id: string;
+  name: string;
+  email: string | null; 
+  age: string | null;
+  height: string | null;
+  weight: string | null;
+  objective: string | null;
+  experience: string | null;
+  injuries: string | null;
+  limitations: string | null;
+  availability: string | null;
+  created_at: string;
+};

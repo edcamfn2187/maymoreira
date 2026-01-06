@@ -1,12 +1,23 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-import { Anamnese } from "../types";
 
+type Anamnese = {
+  id: string;
+  name: string;
+  age: string | null;
+  height: string | null;
+  weight: string | null;
+  objective: string | null;
+  experience: string | null;
+  injuries: string | null;
+  limitations: string | null;
+  availability: string | null;
+  created_at: string;
+};
 
 const AdminAnamneses = () => {
   const [anamneses, setAnamneses] = useState<Anamnese[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadAnamneses();
@@ -14,7 +25,6 @@ const AdminAnamneses = () => {
 
   const loadAnamneses = async () => {
     setLoading(true);
-    setErrorMsg(null);
 
     const { data, error } = await supabase
       .from("anamneses")
@@ -23,8 +33,7 @@ const AdminAnamneses = () => {
 
     if (error) {
       console.error("Erro ao buscar anamneses:", error);
-      setErrorMsg("Erro ao carregar anamneses do banco.");
-      setAnamneses([]);
+      alert("Erro ao carregar anamneses");
     } else {
       setAnamneses(data || []);
     }
@@ -33,13 +42,13 @@ const AdminAnamneses = () => {
   };
 
   const deleteAnamnese = async (id: string) => {
-    if (!window.confirm("Deseja realmente excluir esta anamnese?")) return;
+    if (!confirm("Deseja excluir esta anamnese?")) return;
 
     const { error } = await supabase.from("anamneses").delete().eq("id", id);
 
     if (error) {
       console.error("Erro ao excluir:", error);
-      alert("Erro ao excluir anamnese.");
+      alert("Erro ao excluir anamnese");
     } else {
       loadAnamneses();
     }
@@ -49,11 +58,9 @@ const AdminAnamneses = () => {
     <div>
       <h2 className="text-xl font-bold mb-6">Anamneses Recebidas</h2>
 
-      {loading && <p className="text-slate-400">Carregando anamneses...</p>}
+      {loading && <p className="text-slate-400">Carregando...</p>}
 
-      {errorMsg && <p className="text-red-500 text-sm">{errorMsg}</p>}
-
-      {!loading && !errorMsg && anamneses.length === 0 && (
+      {!loading && anamneses.length === 0 && (
         <p className="text-slate-400">Nenhuma anamnese enviada ainda.</p>
       )}
 
@@ -64,11 +71,7 @@ const AdminAnamneses = () => {
             className="bg-slate-800 p-4 rounded border border-white/5"
           >
             <div className="flex justify-between items-center mb-2">
-              <div>
-                <strong className="text-pink-500 text-lg">{a.name}</strong>
-                <p className="text-xs text-slate-400">{a.email}</p>
-              </div>
-
+              <strong className="text-pink-500">{a.name}</strong>
               <div className="flex items-center gap-3">
                 <span className="text-xs text-slate-400">
                   {new Date(a.created_at).toLocaleDateString()}
@@ -82,19 +85,18 @@ const AdminAnamneses = () => {
               </div>
             </div>
 
-
-            <p className="text-sm text-slate-300 mb-2">
-              <strong>Objetivo:</strong> {a.objective || "-"}
+            <p className="text-sm text-slate-300">
+              <strong>Objetivo:</strong> {a.objective}
             </p>
 
             <div className="mt-2 text-xs text-slate-400 space-y-1">
-              <p>Idade: {a.age || "-"}</p>
-              <p>Altura: {a.height || "-"}</p>
-              <p>Peso: {a.weight || "-"}</p>
-              <p>Experiência: {a.experience || "-"}</p>
-              <p>Lesões: {a.injuries || "-"}</p>
-              <p>Limitações: {a.limitations || "-"}</p>
-              <p>Disponibilidade: {a.availability || "-"}</p>
+              <p>Idade: {a.age}</p>
+              <p>Altura: {a.height}</p>
+              <p>Peso: {a.weight}</p>
+              <p>Experiência: {a.experience}</p>
+              <p>Lesões: {a.injuries}</p>
+              <p>Limitações: {a.limitations}</p>
+              <p>Disponibilidade: {a.availability}</p>
             </div>
           </div>
         ))}
