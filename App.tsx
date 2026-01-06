@@ -4,7 +4,11 @@ import VideoGrid from "./components/VideoGrid";
 import AdminGate  from "./admin/AdminGate";
 import StudentGate  from "./student/StudentGate";
 import AnamneseForm from "./components/AnamneseForm";
+import CadastroAluno from "./student/CadastroAluno";
 import { Link } from "react-router-dom";
+
+
+
 
 
 
@@ -15,6 +19,7 @@ const App: React.FC = () => {
 
   const [adminOpen, setAdminOpen] = useState(false);
   const [alunoOpen, setalunoOpen] = useState(false);
+  const [cadastroOpen, setCadastroOpen] = useState(false);
 
 
   useEffect(() => {
@@ -59,6 +64,21 @@ const App: React.FC = () => {
     );
   }
 
+    if (cadastroOpen) {
+    return (
+      <div className="min-h-screen bg-slate-950 p-6">
+        <button
+          onClick={() => setCadastroOpen(false)}
+          className="mb-6 bg-pink-600 text-white px-6 py-2 rounded-full font-bold"
+        >
+          Voltar para o site
+        </button>
+
+        <CadastroAluno />
+      </div>
+    );
+  }
+
 
   return (
     <div className="min-h-screen bg-slate-950 font-sans selection:bg-pink-500 selection:text-white">
@@ -86,19 +106,21 @@ const App: React.FC = () => {
 
          {/* Desktop menu */}
           <div className="hidden md:flex items-center gap-8">
-            <a href="#home" className="menu-link">
-              Início
-            </a>
 
-            <a href="#videos" className="menu-link">
-              Treinos
-            </a>
+            <button
+              onClick={() => setCadastroOpen(true)}
+              className="menu-button"
+            >
+              Cadastro
+            </button>
+
 
             <button
               onClick={() => setalunoOpen(true)}
               className="menu-button">
               Área do Aluno
             </button>
+            
 
             <button
               onClick={() => setAdminOpen(true)}
@@ -135,15 +157,18 @@ const App: React.FC = () => {
 
       {menuOpen && (
         <div className="md:hidden mt-6 bg-slate-900 rounded-2xl p-6 flex flex-col gap-4">
-          <a href="#home" className="menu-link">
-            Início
-          </a>
 
-          <a href="#videos" className="menu-link">
-            Treinos
-          </a>
+          <button
+            onClick={() => setCadastroOpen(true)}
+            className="menu-button w-full"
+          >
+            Cadastro
+          </button>
 
-          <button className="menu-button w-full">
+          <button
+            onClick={() => setalunoOpen(true)}
+            className="menu-button w-full"
+          >
             Área do Aluno
           </button>
 
@@ -212,11 +237,26 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        <VideoGrid />
+        <header
+          id="home"
+          className="relative h-screen w-full flex items-center justify-center bg-slate-950 overflow-hidden"
+        >
+          {/* Vídeo de fundo ou central */}
+          <div className="relative z-10 w-full max-w-5xl aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+            <iframe
+              src="https://www.youtube.com/embed/ItbLWVY6J_Y"
+              title="Vídeo introdutório"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+              className="w-full h-full"
+            />
+          </div>
 
-        <section className="py-24 px-6 bg-slate-950">
-          <AnamneseForm />
-        </section>
+          {/* Overlay suave */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-slate-950"></div>
+
+        </header>"
+
 
         <section className="bg-slate-900/50 py-20 border-y border-white/5">
           <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center">

@@ -28,6 +28,7 @@ const StudentVideos = ({ student }: Props) => {
     );
 
     setVideos(filtered);
+    console.log("Vídeos liberados:", filtered.length);
   };
 
   return (
