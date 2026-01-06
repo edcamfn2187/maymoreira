@@ -323,8 +323,7 @@ const App: React.FC = () => {
           <p className="text-slate-600 text-sm">&copy; {new Date().getFullYear()} Mayara Moreira Vieira.</p>
 
           <div className="flex gap-12">
-             <a href="#" className="text-slate-500 hover:text-pink-500 transition-colors font-black uppercase text-[10px] tracking-[0.2em]">Instagram</a>
-             <a href="#" className="text-slate-500 hover:text-pink-500 transition-colors font-black uppercase text-[10px] tracking-[0.2em]">WhatsApp</a>
+             <a href="https://www.instagram.com/mayaramoreiraed.fisica" className="text-slate-500 hover:text-pink-500 transition-colors font-black uppercase text-[10px] tracking-[0.2em]">Instagram</a>
           </div>
         </div>
       </footer>
