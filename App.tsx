@@ -104,7 +104,7 @@ const App: React.FC = () => {
             </span>
           </div>
 
-         {/* Desktop menu */}
+          {/* Desktop menu */}
           <div className="hidden md:flex items-center gap-8">
 
             <button
@@ -132,54 +132,59 @@ const App: React.FC = () => {
 
           {/* Hamburger button (mobile) */}
           <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden flex flex-col justify-center items-center gap-1 w-10 h-10"
+            onClick={() => setMenuOpen(true)}
+            className="md:hidden text-white text-3xl font-bold"
           >
-            <span
-              className={`w-6 h-0.5 bg-white transition-all ${
-                menuOpen ? "rotate-45 translate-y-1.5" : ""
-              }`}
-            />
-            <span
-              className={`w-6 h-0.5 bg-white transition-all ${
-                menuOpen ? "opacity-0" : ""
-              }`}
-            />
-            <span
-              className={`w-6 h-0.5 bg-white transition-all ${
-                menuOpen ? "-rotate-45 -translate-y-1.5" : ""
-              }`}
-            />
+            ☰
           </button>
+
         </div>
       </nav>
 
 
       {menuOpen && (
-        <div className="md:hidden mt-6 bg-slate-900 rounded-2xl p-6 flex flex-col gap-4">
+        <div className="fixed inset-0 z-[200] bg-slate-950 flex flex-col items-center justify-center gap-8 text-white">
 
           <button
-            onClick={() => setCadastroOpen(true)}
-            className="menu-button w-full"
+            onClick={() => setMenuOpen(false)}
+            className="absolute top-8 right-8 text-3xl font-bold text-pink-500"
+          >
+            ✕
+          </button>
+
+          <button
+            onClick={() => {
+              setMenuOpen(false);
+              setCadastroOpen(true);
+            }}
+            className="menu-button text-xl px-10 py-4"
           >
             Cadastro
           </button>
 
           <button
-            onClick={() => setalunoOpen(true)}
-            className="menu-button w-full"
+            onClick={() => {
+              setMenuOpen(false);
+              setalunoOpen(true);
+            }}
+            className="menu-button text-xl px-10 py-4"
           >
             Área do Aluno
           </button>
 
           <button
-            onClick={() => setAdminOpen(true)}
-            className="menu-button w-full"
+            onClick={() => {
+              setMenuOpen(false);
+              setAdminOpen(true);
+            }}
+            className="menu-button text-xl px-10 py-4"
           >
             Área Administrativa
           </button>
+
         </div>
       )}
+
 
 
       {/* Hero Section with requested Photo and Swipe Up */}
@@ -255,7 +260,7 @@ const App: React.FC = () => {
           {/* Overlay suave */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-slate-950"></div>
 
-        </header>"
+        </header>
 
 
         <section className="bg-slate-900/50 py-20 border-y border-white/5">
